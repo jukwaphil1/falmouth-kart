@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#111" />
+  <title>Falmouth Kart - Prototype</title>
+  <link href="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+    html, body { margin:0; height:100%; overflow:hidden; background:#111; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    #map { position:fixed; inset:0; }
+    #shade { position:fixed; inset:0; pointer-events:none; background:linear-gradient(to bottom,rgba(0,0,0,.18),transparent 36%,rgba(0,0,0,.20)); }
+    #hud { position:fixed; top:max(12px,env(safe-area-inset-top)); left:12px; right:12px; display:flex; justify-content:space-between; gap:10px; color:#fff; text-shadow:0 2px 4px #000; z-index:5; font-weight:700; }
+    .panel { background:rgba(0,0,0,.43); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.22); border-radius:12px; padding:9px 11px; }
+    #status { font-size:12px; font-weight:600; max-width:58vw; }
+    #speed { font-size:22px; min-width:108px; text-align:right; }
+    #car { position:fixed; left:50%; top:59%; width:34px; height:58px; transform:translate(-50%,-50%); z-index:4; filter:drop-shadow(0 6px 4px rgba(0,0,0,.45)); pointer-events:none; }
+    #car::before { content:""; position:absolute; inset:0; border-radius:10px 10px 7px 7px; background:linear-gradient(#f7df45 0 18%,#20242a 19% 42%,#d7be2a 43% 100%); border:2px solid #111; box-sizing:border-box; }
+    #car::after { content:""; position:absolute; left:7px; right:7px; top:12px; height:13px; border-radius:4px; background:#6aa6bd; border:1px solid #0a1d26; }
+    #controls { position:fixed; left:0; right:0; bottom:max(16px,env(safe-area-inset-bottom)); height:145px; z-index:6; pointer-events:none; }
+    .btn { position:absolute; pointer-events:auto; touch-action:none; user-select:none; -webkit-user-select:none; width:72px; height:72px; border-radius:50%; border:2px solid rgba(255,255,255,.55); background:rgba(15,15,15,.48); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; backdrop-filter:blur(5px); }
+    #left { left:18px; bottom:4px; }
+    #right { left:100px; bottom:4px; }
+    #brake { right:100px; bottom:4px; }
+    #go { right:18px; bottom:4px; width:78px; height:78px; background:rgba(36,109,49,.58); }
+    #start { position:fixed; inset:0; z-index:20; background:rgba(0,0,0,.72); color:#fff; display:flex; align-items:center; justify-content:center; padding:26px; box-sizing:border-box; }
+    #card { max-width:520px; width:100%; background:#171717; border:1px solid #555; border-radius:18px; padding:22px; box-sizing:border-box; }
+    #card h1 { margin:0 0 10px; font-size:30px; }
+    #card p { line-height:1.38; color:#ddd; }
+    #play { width:100%; border:0; border-radius:12px; padding:14px; font-size:18px; font-weight:800; background:#f0d13d; color:#161616; }
+    #credits { font-size:11px; opacity:.72; margin-top:10px; }
+    #message { position:fixed; left:50%; top:44%; transform:translate(-50%,-50%); z-index:10; color:#fff; font-weight:900; font-size:36px; text-shadow:0 3px 8px #000; pointer-events:none; opacity:0; transition:opacity .2s; white-space:nowrap; }
+    @media (min-width:900px) { #controls { max-width:600px; left:50%; transform:translateX(-50%); } }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="shade"></div>
+  <div id="car" aria-hidden="true"></div>
+  <div id="hud">
+    <div class="panel"><div>FALMOUTH KART</div><div id="status">Loading Falmouth...</div></div>
+    <div class="panel" id="speed">0 mph</div>
+  </div>
+  <div id="message"></div>
+  <div id="controls">
+    <div class="btn" id="left">LEFT</div>
+    <div class="btn" id="right">RIGHT</div>
+    <div class="btn" id="brake">BRAKE</div>
+    <div class="btn" id="go">GO</div>
+  </div>
+  <div id="start">
+    <div id="card">
+      <h1>Falmouth Kart</h1>
+      <p>A first playable prototype using real OpenStreetMap streets and building footprints around Falmouth. Drive with the on-screen controls or arrow/WASD keys.</p>
+      <p>The yellow line is the first race circuit. This build is deliberately simple: one car, free driving, a timed lap and recognisable Falmouth geography.</p>
+      <button id="play">Start driving</button>
+      <div id="credits">Map data © OpenStreetMap contributors. Prototype only. Building data is fetched live from OpenStreetMap via Overpass.</div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@5.7.1/dist/maplibre-gl.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
